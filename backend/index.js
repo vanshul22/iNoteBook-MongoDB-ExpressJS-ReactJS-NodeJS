@@ -6,7 +6,7 @@ const express = require('express');
 connectToMongo();
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Using Middle Ware here to use content of body to send request.
 app.use(express.json())
