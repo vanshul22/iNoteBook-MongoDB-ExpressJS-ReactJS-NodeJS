@@ -1,12 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
-const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const { body, validationResult } = require("express-validator");
+const User = require("../models/User");
 const fetchuser = require("../middleWare/fetch_user");
 
-const JWT_SECRET = "ThisisaJWTsecretkey";
 
 // Route 1 : Create a User using:POST "api/auth/createuser". No login required.
 router.post("/createuser", [
@@ -41,7 +41,7 @@ router.post("/createuser", [
             user: { id: user.id }
         };
         // Generating authentication token here
-        const authToken = jwt.sign(data, JWT_SECRET);
+        const authToken = jwt.sign(data, process.env.JWT_SECRET);
         // Sending authentication token to user.
         res.json({ authToken });
 
@@ -77,7 +77,7 @@ router.post("/login", [
             user: { id: user.id }
         }
         // Generating authentication token here
-        const authToken = jwt.sign(data, JWT_SECRET);
+        const authToken = jwt.sign(data, process.env.JWT_SECRET);
         res.send({ authToken });
     } catch (error) {
         console.error(error.message);
@@ -89,6 +89,7 @@ router.post("/login", [
 router.post("/getuser", fetchuser, async (req, res) => {
     try {
         let userId = req.user.id;
+        // Apart from password take everything.
         const user = await User.findById(userId).select("-password");
         res.send(user);
     } catch (error) {
