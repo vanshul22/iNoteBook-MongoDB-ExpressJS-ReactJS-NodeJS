@@ -5,7 +5,7 @@ const { body, validationResult } = require("express-validator");
 const Note = require("../models/Note");
 
 
-// Route 1 : Get allnotes details using:GET "api/notes/fetchallnotes". login required.
+// Route 1 : Get all Notes details using:GET "api/notes/fetchallnotes". login required.
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
     try {
         const notes = await Note.find({ user: req.user.id })
@@ -43,7 +43,7 @@ router.post("/addnote", fetchuser, [
     }
 });
 
-// Route 3 : Update an existing note Note  using:POST "api/notes/updatenote". login required.
+// Route 3 : Update an existing Note using:PUT "api/notes/updatenote". login required.
 router.put("/updatenote/:id", fetchuser, async (req, res) => {
 
     try {
@@ -71,4 +71,24 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
     };
 });
 
+// Route 4 : Delete an existing Note using:Delete "api/notes/deletenote". login required.
+router.delete("/deletenote/:id", fetchuser, async (req, res) => {
+
+    try {
+        // Finding the note to deleted and delete it.
+        let note = await Note.findById(req.params.id);
+        // If note id is not present then will show this.
+        if (!note) { return res.status(404).send("Not Found...") };
+        // Checking for fake users here. | Allow deletion only if user owns this note.
+        if (note.user.toString() !== req.user.id) { return res.status(401).json("Not Alowed") };
+        // Here new will create new parameters of note if not available.
+        note = await Note.findByIdAndDelete(req.params.id);
+        // Sending response as new note
+        res.send({ "Success": "Note has been deleted", note: note });
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    };
+});
 module.exports = router;
