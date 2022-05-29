@@ -1,14 +1,15 @@
 import React from 'react';
-import { Link} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+    // To check the current location in url
+    let currentLocation = useLocation();
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">
-                        iNoteBook
-                    </Link>
+                    <Link className="navbar-brand" to="/"> iNoteBook </Link>
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -23,14 +24,10 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link" aria-current="page" to="/">
-                                    Home
-                                </Link>
+                                <Link className={`nav-link ${currentLocation.pathname === "/" ? "active" : ""}`} aria-current="page" to="/"> Home </Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/about">
-                                    About
-                                </Link>
+                                <Link className={`nav-link ${currentLocation.pathname === "/about" ? "active" : ""}`} to="/about"> About </Link>
                             </li>
                         </ul>
                         <form className="d-flex">
