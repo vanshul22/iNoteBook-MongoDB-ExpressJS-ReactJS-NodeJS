@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import contextValue from "../Context/notes/noteContext"
+import React from 'react';
+import Notes from './Notes';
 
 const Home = () => {
-    const context = useContext(contextValue)
-    const { notes, setNotes } = context
+
     return (
         <div className='container my-4'>
             <h2>Add a Note :</h2>
@@ -27,7 +26,7 @@ const Home = () => {
                 </div>
                 <button type='submit' className='btn btn-dark'>Add Note</button>
             </form>
-            <h2 className='my-3'>Your Notes</h2>
+            <Notes />
         </div>
     );
 };
