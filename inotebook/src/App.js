@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar";
 import Home from './Components/Home';
 import About from './Components/About';
 import NoteState from './Context/notes/NotesState';
+import Alert from './Components/Alert';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <NoteState>
         <Router>
           <Navbar />
+            <Alert msg="this is React Alert." typ="success"/>
           <div className="container">
             <Routes>
               <Route exact path="/" element={<Home />} />
