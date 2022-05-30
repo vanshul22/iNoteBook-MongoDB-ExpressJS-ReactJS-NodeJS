@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import contextValue from "../Context/notes/noteContext";
+import noteContext from "../Context/notes/noteContext";
 
 const AddNote = () => {
-  const context = useContext(contextValue);
+  const context = useContext(noteContext);
   // Taken values by destructuring context.
   const { addNote } = context;
 

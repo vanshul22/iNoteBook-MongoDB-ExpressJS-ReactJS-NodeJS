@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
-import contextValue from "../Context/notes/noteContext";
+import noteContext from "../Context/notes/noteContext";
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
 
 const Notes = () => {
-  const context = useContext(contextValue);
-  // eslint-disable-next-line 
-  const { notes, addNote } = context;
+  const context = useContext(noteContext);
+  const { notes } = context;
 
   return (
     <>
