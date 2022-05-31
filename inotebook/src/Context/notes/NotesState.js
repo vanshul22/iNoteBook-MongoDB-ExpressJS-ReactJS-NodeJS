@@ -2,68 +2,26 @@ import React, { useState } from "react";
 import noteContext from "./noteContext";
 
 const NoteState = (props) => {
+  const host = "http://localhost:5000";
 
-  const notesInitial = [
-    {
-      "_id": "6293dde91df4ee29c56bfd045",
-      "user": "6293db6d2472acd8c9425130",
-      "title": "Vanshul title 1",
-      "description": "Wake up early morning.1",
-      "tag": "General",
-      "date": "2022-05-29T20:56:09.768Z",
-      "__v": 0
-    },
-    {
-      "_id": "6293dde91df4er29c56bfd045",
-      "user": "6293db6d2472acd8c9425130",
-      "title": "Vanshul title 2",
-      "description": "Wake up early morning.2",
-      "tag": "General 2",
-      "date": "2022-05-29T20:56:09.768Z",
-      "__v": 0
-    },
-    {
-      "_id": "6293dde91dfu4e29c56bfd045",
-      "user": "6293db6d2472acd8c9425130",
-      "title": "Vanshul title 1",
-      "description": "Wake up early morning.1",
-      "tag": "General",
-      "date": "2022-05-29T20:56:09.768Z",
-      "__v": 0
-    },
-    {
-      "_id": "6293dde91df4e29c5w6bfd045",
-      "user": "6293db6d2472acd8c9425130",
-      "title": "Vanshul title 2",
-      "description": "Wake up early morning.2",
-      "tag": "General 2",
-      "date": "2022-05-29T20:56:09.768Z",
-      "__v": 0
-    },
-    {
-      "_id": "6293dde9d1df4e29c56bfd045",
-      "user": "6293db6d2472acd8c9425130",
-      "title": "Vanshul title 1",
-      "description": "Wake up early morning.1",
-      "tag": "General",
-      "date": "2022-05-29T20:56:09.768Z",
-      "__v": 0
-    },
-    {
-      "_id": "6293dde91df4e29c56bhfd045",
-      "user": "6293db6d2472acd8c9425130",
-      "title": "Vanshul title 2",
-      "description": "Wake up early morning.2",
-      "tag": "General 2",
-      "date": "2022-05-29T20:56:09.768Z",
-      "__v": 0
-    },
-  ];
+  const notesInitial = [];
   const [notes, setNotes] = useState(notesInitial);
 
+  // Get all notes
+  const getNotes = async () => {
+    const url = `${host}/api/notes/fetchallnotes`;
+    // API call from fetch API
+    const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5NjZhMzFhOTUwMGNhOTRlZTEyYzQxIn0sImlhdCI6MTY1NDAyNDgwNH0.Oxcd7aEwuTqA_KIzl_nvyWB13WylfmV5OhJCEv41wEU' } });
+    let json = await response.json();
+    console.log(json);
+    setNotes(json);
+  };
+
   // Add a note
-  const addNote = (title, description, tag) => {
-    // TODO API call.
+  const addNote = async (title, description, tag) => {
+    const url = `${host}/api/notes/addnote`;
+    // API call from fetch API
+    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5NjZhMzFhOTUwMGNhOTRlZTEyYzQxIn0sImlhdCI6MTY1NDAyNDgwNH0.Oxcd7aEwuTqA_KIzl_nvyWB13WylfmV5OhJCEv41wEU' }, body: JSON.stringify(title, description, tag) });
     let note = {
       "_id": "6293dde91dfl4e29c56bhfd045",
       "user": "6293db6pd2472acd8c9425130",
@@ -76,7 +34,22 @@ const NoteState = (props) => {
     setNotes(notes.concat(note));
   };
   // Edit a note
-  const editNote = (id, title, description,tag) => { };
+  const editNote = async (id, title, description, tag) => {
+    const url = `${host}/api/notes/updatenote/${id}`;
+    // API call from fetch API
+    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5NjZhMzFhOTUwMGNhOTRlZTEyYzQxIn0sImlhdCI6MTY1NDAyNDgwNH0.Oxcd7aEwuTqA_KIzl_nvyWB13WylfmV5OhJCEv41wEU' }, body: JSON.stringify(title, description, tag) });
+    const json = response.json;
+
+    // Logic for frontend.
+    for (let i = 0; i < notes.length; i++) {
+      const element = notes[i];
+      if (element._id === id) {
+        element.title = title;
+        element.description = description;
+        element.tag = tag;
+      };
+    };
+  };
   // Delete a note
   const deleteNote = (id) => {
     // TODO API call
@@ -87,7 +60,7 @@ const NoteState = (props) => {
 
 
   return (
-    <noteContext.Provider value={{ notes, setNotes, addNote, editNote, deleteNote }}>
+    <noteContext.Provider value={{ notes, setNotes, getNotes, addNote, editNote, deleteNote }}>
       {props.children}
     </noteContext.Provider>
   )
