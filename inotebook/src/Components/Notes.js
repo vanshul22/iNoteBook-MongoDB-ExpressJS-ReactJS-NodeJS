@@ -6,7 +6,7 @@ import NoteItem from './NoteItem';
 const Notes = () => {
 
   const context = useContext(noteContext);
-  const { notes, getNotes } = context;
+  const { notes, getNotes, editNote } = context;
 
   useEffect(() => {
     getNotes()
@@ -14,17 +14,18 @@ const Notes = () => {
   }, []);
 
   // We are refering below of jsx modal by using useRef.
-  const ref = useRef(null);
+  const refOpenModal = useRef(null);
+  const refCloseModal = useRef(null);
 
   // Create function to open modal.
   const updateNote = (currentNote) => {
-    ref.current.click();
-    setNote({ etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag });
+    refOpenModal.current.click();
+    setNote({ id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag });
   };
 
   // Create state to update the values.
-  const [note, setNote] = useState({ etitle: "", edescription: "", etag: "" });
-  
+  const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "" });
+
   // Onchange changing the value from this function
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
@@ -32,7 +33,8 @@ const Notes = () => {
 
   // Submitting note here
   const handleClick = (e) => {
-    e.preventDefault();
+    editNote(note.id, note.etitle, note.edescription, note.etag);
+    refCloseModal.current.click();
   };
 
   return (
@@ -42,7 +44,7 @@ const Notes = () => {
         className="btn btn-primary d-none"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
-        ref={ref}
+        ref={refOpenModal}
       >
 
       </button>
@@ -107,6 +109,7 @@ const Notes = () => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                ref={refCloseModal}
               >
                 Cancel
               </button>
