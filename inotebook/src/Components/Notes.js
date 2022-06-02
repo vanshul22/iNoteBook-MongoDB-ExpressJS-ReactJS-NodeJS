@@ -79,6 +79,7 @@ const Notes = () => {
                   placeholder="Add title here..."
                   value={note.etitle}
                   onChange={onChange}
+                  minLength={5} required
                 /></div>
               <div className="mb-3">
                 <label htmlFor="edescription" className="form-label">Description</label>
@@ -90,6 +91,7 @@ const Notes = () => {
                   placeholder={"Add description here..."}
                   value={note.edescription}
                   onChange={onChange}
+                  minLength={5} required
                 />
               </div>
               <div className="mb-3">
@@ -113,7 +115,7 @@ const Notes = () => {
               >
                 Cancel
               </button>
-              <button type="button" className="btn btn-primary" onClick={handleClick}>
+              <button disabled={note.etitle.length < 5 || note.edescription.length < 5} type="button" className="btn btn-primary" onClick={handleClick}>
                 Update Note
               </button>
             </div>
@@ -121,9 +123,12 @@ const Notes = () => {
         </div>
       </div>
     </>
+
       <AddNote />
       <div className='row my-3'>
         <h2>Your Notes</h2>
+        <div className="container">
+          {notes.length === 0 && "No notes to Display"}</div>
         {notes.map((note) => <NoteItem key={note._id} note={note} updateNote={updateNote} />)}
       </div>
     </>

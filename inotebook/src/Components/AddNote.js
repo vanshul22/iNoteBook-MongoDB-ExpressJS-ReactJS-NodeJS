@@ -2,13 +2,13 @@ import React, { useContext, useState } from 'react';
 import noteContext from "../Context/notes/noteContext";
 
 const AddNote = () => {
-  
+
   const context = useContext(noteContext);
   // Taken values by destructuring context.
   const { addNote } = context;
 
   // Create state to update the values.
-  const [note, setNote] = useState({ title: "", description: "", tag: "default" });
+  const [note, setNote] = useState({ title: "", description: "", tag: "" });
 
   // Onchange changing the value from this function
   const onChange = (e) => {
@@ -21,6 +21,7 @@ const AddNote = () => {
     // Preventing page to reload after submitting note.
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "" })
   };
 
   return (
@@ -36,6 +37,8 @@ const AddNote = () => {
             name='title'
             placeholder="Add title here..."
             onChange={onChange}
+            minLength={5} required
+            value={note.title}
           /></div>
         <div className="mb-3">
           <label htmlFor="description" className="form-label">Description</label>
@@ -44,8 +47,10 @@ const AddNote = () => {
             id="description"
             name='description'
             rows={2}
-            defaultValue={""} placeholder={"Add description here..."}
+            placeholder={"Add description here..."}
             onChange={onChange}
+            minLength={5} required
+            value={note.description}
           />
         </div>
         <div className="mb-3">
@@ -57,8 +62,9 @@ const AddNote = () => {
             name='tag'
             placeholder="Add tag here..."
             onChange={onChange}
+            value={note.tag}
           /></div>
-        <button type='submit' className='btn btn-dark' onClick={handleClick}>Add Note</button>
+        <button disabled={note.title.length < 5 || note.description.length < 5} type='submit' className='btn btn-dark' onClick={handleClick}>Add Note</button>
       </form>
     </div>
   );

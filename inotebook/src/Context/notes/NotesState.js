@@ -21,18 +21,8 @@ const NoteState = (props) => {
     const url = `${host}/api/notes/addnote`;
     // API call from fetch API
     const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5NzNkYjNmYzNiMzIwYThmMjI2MTg5In0sImlhdCI6MTY1NDA3ODk0N30.s22XZ9djk_5fzRP1YcF8jxcRjHGlTwMIxpkJ4Q__VAQ' }, body: JSON.stringify({ title, description, tag }) });
-    let responseData = await response.json()
-
-    // Inserting data to their respective field.
-    let note = {
-      "_id": responseData._id,
-      "user": responseData.user,
-      "title": responseData.title,
-      "description": responseData.description,
-      "tag": responseData.tag,
-      "date": responseData.data,
-      "__v": responseData.__v
-    };
+    let note = await response.json();
+    // Setting note here
     setNotes(notes.concat(note));
   };
 
