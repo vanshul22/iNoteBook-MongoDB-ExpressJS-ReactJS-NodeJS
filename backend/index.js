@@ -9,7 +9,7 @@ connectToMongo();
 const app = express();
 const port = 5000;
 
-// To solve the issue of cors error we use this
+// It allows us to relax the security applied to an API.
 app.use(cors());
 
 // Using Middle Ware here to use content of body to send request.

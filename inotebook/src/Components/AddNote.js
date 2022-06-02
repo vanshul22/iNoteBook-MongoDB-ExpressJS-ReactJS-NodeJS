@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import noteContext from "../Context/notes/noteContext";
 
 const AddNote = () => {
+  
   const context = useContext(noteContext);
   // Taken values by destructuring context.
   const { addNote } = context;
@@ -47,6 +48,16 @@ const AddNote = () => {
             onChange={onChange}
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="tag" className="form-label">Add a Tag</label>
+          <input
+            type="text"
+            className="form-control"
+            id="tag"
+            name='tag'
+            placeholder="Add tag here..."
+            onChange={onChange}
+          /></div>
         <button type='submit' className='btn btn-dark' onClick={handleClick}>Add Note</button>
       </form>
     </div>
