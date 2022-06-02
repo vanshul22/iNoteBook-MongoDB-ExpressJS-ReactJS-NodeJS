@@ -56,6 +56,7 @@ router.post("/login", [
     body('email', "Please enter valid email in format 'name@example.com'...").isEmail(),
     body('password', "Password cannot be blank").exists()
 ], async (req, res) => {
+    let success = false;
     // If there are errors return bad request and errors.
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -66,11 +67,11 @@ router.post("/login", [
         // Checking user from mail from DB
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: "Please try to login with correct credentials..." });
+            return res.status(400).json({success, error: "Please try to login with correct credentials..." });
         }
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
-            return res.status(400).json({ error: "Please try to login with correct credentials..." });
+            return res.status(400).json({success, error: "Please try to login with correct credentials..." });
         }
         // Taking id from creating user.
         const data = {
@@ -78,7 +79,8 @@ router.post("/login", [
         }
         // Generating authentication token here
         const authToken = jwt.sign(data, process.env.JWT_SECRET);
-        res.send({ authToken });
+        success = true;
+        res.json({ success, authToken });
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error");
