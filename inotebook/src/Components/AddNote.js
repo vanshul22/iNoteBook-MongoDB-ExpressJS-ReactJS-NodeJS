@@ -21,7 +21,7 @@ const AddNote = () => {
     // Preventing page to reload after submitting note.
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
-    setNote({ title: "", description: "", tag: "" })
+    setNote({ title: "", description: "", tag: "" });
   };
 
   return (

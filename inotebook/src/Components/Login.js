@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   // Using this hook to redirect to the notes page.
   let navigate = useNavigate();
 
@@ -16,7 +16,8 @@ const Login = () => {
       // Save the authToken and redirecting to notes page.
       localStorage.setItem("token", responseJSON.authToken);
       navigate("/");
-    } else { alert("Invalid credentials."); }
+      props.showAlert("LoggedIn Successfully", "success");
+    } else { props.showAlert("Invalid credentials.", "danger"); }
   };
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
