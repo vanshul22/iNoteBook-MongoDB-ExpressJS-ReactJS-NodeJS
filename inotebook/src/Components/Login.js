@@ -15,8 +15,8 @@ const Login = (props) => {
     if (responseJSON.success === true) {
       // Save the authToken and redirecting to notes page.
       localStorage.setItem("token", responseJSON.authToken);
-      navigate("/");
       props.showAlert("LoggedIn Successfully", "success");
+      navigate("/");
     } else { props.showAlert("Invalid credentials.", "danger"); }
   };
 
@@ -28,6 +28,7 @@ const Login = (props) => {
 
   return (
     <>
+      <h2>Login to continue to iNoteBook</h2>
       <form className='my-5' onSubmit={handleLoginSubmit}>
 
         <div className="mb-3">

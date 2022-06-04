@@ -32,7 +32,9 @@ const SignUp = (props) => {
 
 
   return (
-    <div className='container my-5'>
+    <div className='container my-3'>
+      <h2 className='mb-4'>Create an Account to use iNoteBook</h2>
+
       <form onSubmit={handleSignUpSubmit}>
 
         <div className="mb-3">
@@ -64,4 +66,4 @@ const SignUp = (props) => {
   )
 }
 
-export default SignUp
+export default SignUp;
