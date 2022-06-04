@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import noteContext from "../Context/notes/noteContext";
 
-const AddNote = () => {
+const AddNote = (props) => {
 
   const context = useContext(noteContext);
   // Taken values by destructuring context.
@@ -22,6 +22,7 @@ const AddNote = () => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
     setNote({ title: "", description: "", tag: "" });
+    props.showAlert("Notes Added Successfully...", "success")
   };
 
   return (

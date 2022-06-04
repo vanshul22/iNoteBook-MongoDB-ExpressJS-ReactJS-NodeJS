@@ -3,7 +3,7 @@ import noteContext from "../Context/notes/noteContext";
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
 
-const Notes = () => {
+const Notes = (props) => {
 
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
@@ -35,6 +35,7 @@ const Notes = () => {
   const handleClick = (e) => {
     editNote(note.id, note.etitle, note.edescription, note.etag);
     refCloseModal.current.click();
+    props.showAlert("Notes Updated Successfully...", "success")
   };
 
   return (
@@ -124,12 +125,12 @@ const Notes = () => {
       </div>
     </>
 
-      <AddNote />
+      <AddNote showAlert={props.showAlert}/>
       <div className='row my-3'>
         <h2>Your Notes</h2>
         <div className="container">
           {notes.length === 0 && "No notes to Display"}</div>
-        {notes.map((note) => <NoteItem key={note._id} note={note} updateNote={updateNote} />)}
+        {notes.map((note) => <NoteItem key={note._id} note={note} updateNote={updateNote} showAlert={props.showAlert} />)}
       </div>
     </>
   );
